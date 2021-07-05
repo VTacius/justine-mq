@@ -1,6 +1,13 @@
+# Utilitarios
+galleta
+textures/*.json
+
+# VIM
+.*.sw[a-z]
 #
 package-lock.json
 *.key
+
 # Logs
 logs
 *.log

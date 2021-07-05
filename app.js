@@ -16,18 +16,27 @@ let sessionConfig = configuracion.session;
 sessionConfig.store = new redisStore(configuracion['redisAcceso']);
 
 let sambaApi = axios.create(
-    configuracion['sambaApi']
+    configuracion['sambaApi'].acceso
 );
+
+let sambaDominio = configuracion['sambaApi'].dominio;
 
 let configZimbraApi = configuracion['zimbraApi'];
 configZimbraApi.transformRequest = [function (data, headers) {
     let datos = convert.js2xml(data, {compact: true, spaces: 4});
     return datos;
 }];
+
 configZimbraApi.transformResponse = [function (data) {
     let contenido = convert.xml2js(data, {compact: true, spaces: 4});
     return contenido['soap:Envelope']['soap:Body'];
 }]
+
+// TODO: Esto no deberá ir en producción
+const https = require('https');
+configZimbraApi.httpsAgent = new https.Agent({
+	rejectUnauthorized: false
+});
 
 let zimbraApi = axios.create(
     configZimbraApi    
@@ -44,6 +53,7 @@ let app = express();
 /* Dispongo de los accesos a API y Base de Datos */
 app.set('zimbraApi', zimbraApi);
 app.set('sambaApi', sambaApi);
+app.set('sambaDominio', sambaDominio);
 app.set('psqlAcceso', psqlAcceso);
 app.set('zimbraCreds', configuracion.credenciales.zimbra);
 

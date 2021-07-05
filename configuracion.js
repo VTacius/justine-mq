@@ -1,20 +1,20 @@
 const GRUPOS_MAPPING = { 
-    'administrador': ["CN=Administrators,CN=Builtin,DC=psalud,DC=gob,DC=sv"],
-    'tecnico': ["CN=DnsAdmins,CN=Users,DC=psalud,DC=gob,DC=sv"] 
+    'administrador': ["CN=Administrators,CN=Builtin,DC=minsal,DC=sanidad,DC=gob,DC=sv"],
+    'tecnico': ["CN=DnsAdmins,CN=Users,DC=minsal,DC=sanidad,DC=gob,DC=sv"] 
 };
 
 const USUARIOS_TESTING = {
     usuario: {
         username: 'usuario',
-        password: 'P@ssw0rd'
+        password: 'S4mb1t4.12'
     },
     tecnico: {
         username: 'tecnico',
-        password: 'P@ssw0rd'
+        password: 'S4mb1t4.12'
     },
     administrador: {
         username: 'administrador',
-        password: 'P@ssw0rd'
+        password: 'S4mb1t4.12'
     },
 } 
 
@@ -25,31 +25,32 @@ let configuracion = {
         saveUninitialized: false
     },
     redisAcceso: {
-        host: 'redis',
+        host: '127.0.0.1',
         port: '6379'
     },
     sambaApi: {
-        baseURL: 'http://192.168.2.18:6543',
-        headers: {'www-authorization': 'eyJyb2wiOiAiYWRtaW5pc3RyYWRvciIsICJkaXJlY2Npb24iOiAiYWxvcnRpeiJ9.3wR/qMGedccms7xFXN+GCbxlhbTknXGaBrtK3byOzJ0='}
+        dominio: 'sanidad.gob.sv',
+        acceso: { 
+            baseURL: 'http://10.10.40.10:6543',
+            headers: {'www-authorization': 'eyJkaXJlY2Npb24iOiAiYWxvcnRpeiIsICJyb2wiOiAiYWRtaW5pc3RyYWRvciJ9.hzvtUYQRaaxa/lCktpkx6l99xj8c5aA/aitHWOg4j0s='}
+        },
     },
     zimbraApi: {
-        baseURL: 'https://correo.salud.gob.sv:7071',
-        headers:{
-            'Content-Type': 'text/xml'
-        },
+        baseURL: 'https://correo.sanidad.gob.sv:7071',
+        headers: {'Content-Type': 'text/xml'},
         responseType: 'document', 
         
     },
     psqlAcceso: {
-        host: 'postgres',
-        user: 'postgres',
-        database: 'maqueta',
-        password: 'password',
+        host: '10.10.40.14',
+        user: 'justine',
+        database: 'justine',
+        password: 'justine',
     },
     credenciales: {
         zimbra: {
-            usuario: 'api@salud.gob.sv',
-            password: '123456',
+            usuario: 'api.gzovbbbqznqm@sanidad.gob.sv',
+            password: 'P.4ssw0rd',
         }
     }
 };

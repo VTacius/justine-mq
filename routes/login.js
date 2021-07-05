@@ -33,12 +33,13 @@ router.post('/login', function(req, res){
         let usuario = req.body.username; 
         let password = req.body.password;
         let zimbraCreds = req.app.get('zimbraCreds');
-        let dominio = 'mail.salud.gob.sv';
+        let dominio = 'correo.sanidad.gob.sv';
         
         let sambaApi = req.app.get('sambaApi');
         let zimbraApi = req.app.get('zimbraApi');
         
         const operacion = new logueo(sambaApi, zimbraApi);
+        
         operacion.login(zimbraCreds, usuario, password, dominio)
             .then(function(respuesta){
                 /* Configuramos un par de cosas para la sessión */
@@ -54,6 +55,7 @@ router.post('/login', function(req, res){
                     .json(mensaje);
             })
             .catch(function(error){
+                console.log(error);
                 return res
                    .status(401)
                    .json({'mensaje': 'No autenticado'});

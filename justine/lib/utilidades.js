@@ -53,7 +53,9 @@ let registroError = function(req, error){
     } else if (error.data){
         detalle = error.data;
     } else {
+        // Si hemos llegado a este punto, necesitamos loguear el error que se ha devuelto
         detalle = error;
+        console.log(detalle);
     }
 
     return detalle;

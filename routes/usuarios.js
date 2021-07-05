@@ -20,11 +20,11 @@ router.get('/verifica/:id([a-z]+)', permisos('user:retrieve'), refrescador, func
     let sambaApi = req.app.get('sambaApi');
     let zimbraApi = req.app.get('zimbraApi');
     let psqlAcceso = req.app.get('psqlAcceso');
-    
-    let dominio = "salud.gob.sv";
+   
+    let dominio = req.app.get('sambaDominio'); 
     let username = req.params['id'];
     
-    let usuario = instanciarUsuario(roles, sambaApi, zimbraApi, psqlAcceso, tokenz);
+    let usuario = instanciarUsuario(roles, sambaApi.acceso, zimbraApi, psqlAcceso, tokenz);
     usuario.verificar(dominio, username)
         .then(function(resultado){
             return res
@@ -46,8 +46,8 @@ router.get('/detalles', permisos('user:detail'), refrescador, function(req, res,
     let sambaApi = req.app.get('sambaApi');
     let zimbraApi = req.app.get('zimbraApi');
     let psqlAcceso = req.app.get('psqlAcceso');
-    
-    let dominio = "salud.gob.sv";
+
+    let dominio = req.app.get('sambaDominio'); 
 
     let usuario = instanciarUsuario(roles, sambaApi, zimbraApi, psqlAcceso, tokenz);
     usuario.detallar(dominio)
@@ -76,8 +76,8 @@ router.get('/detalles/:id([a-z]+)', permisos('user:detail'), refrescador, functi
     let sambaApi = req.app.get('sambaApi');
     let zimbraApi = req.app.get('zimbraApi');
     let psqlAcceso = req.app.get('psqlAcceso');
-    
-    let dominio = "salud.gob.sv";
+   
+    let dominio = req.app.get('sambaDominio'); 
     let username = req.params['id'];
     
     let usuario = instanciarUsuario(roles, sambaApi, zimbraApi, psqlAcceso, tokenz);
@@ -102,8 +102,8 @@ router.get('/', permisos('user:retrieve'), refrescador, function(req, res, next)
     let sambaApi = req.app.get('sambaApi');
     let zimbraApi = req.app.get('zimbraApi');
     let psqlAcceso = req.app.get('psqlAcceso');
-    
-    let dominio = "salud.gob.sv";
+   
+    let dominio = req.app.get('sambaDominio'); 
     
     let usuario = instanciarUsuario(roles, sambaApi, zimbraApi, psqlAcceso, tokenz);
     usuario.listar(dominio)
@@ -132,8 +132,8 @@ router.get('/:id([a-z]+)', permisos('user:retrieve'), refrescador, function(req,
     let sambaApi = req.app.get('sambaApi');
     let zimbraApi = req.app.get('zimbraApi');
     let psqlAcceso = req.app.get('psqlAcceso');
-    
-    let dominio = "salud.gob.sv";
+   
+    let dominio = req.app.get('sambaDominio'); 
     let username = req.params['id'];
     
     let usuario = instanciarUsuario(roles, sambaApi, zimbraApi, psqlAcceso, tokenz);
@@ -161,7 +161,7 @@ router.post('/', permisos('user:create'), refrescador, esquemaValidacion, functi
             .status(400)
             .json({ errors: errors.array() });
     }
-    
+   
     let roles = req.session.roles
     let tokenz = req.session.tokenz;
     
@@ -169,7 +169,7 @@ router.post('/', permisos('user:create'), refrescador, esquemaValidacion, functi
     let zimbraApi = req.app.get('zimbraApi');
     let psqlAcceso = req.app.get('psqlAcceso');
 
-    let dominio = 'salud.gob.sv';
+    let dominio = req.app.get('sambaDominio'); 
    
     let usuario = instanciarUsuario(roles, sambaApi, zimbraApi, psqlAcceso, tokenz);
     usuario.crear(dominio, req.body)
@@ -181,6 +181,7 @@ router.post('/', permisos('user:create'), refrescador, esquemaValidacion, functi
         })
         .catch(function(error){
             let respuesta = registroError(req, error);
+            console.log(error);
             return res
                 .status((error.status||500))
                 .json(respuesta);
@@ -206,7 +207,7 @@ router.put('/:id([a-z]+)', permisos('user:modify'), refrescador, esquemaValidaci
     let zimbraApi = req.app.get('zimbraApi');
     let psqlAcceso = req.app.get('psqlAcceso');
     
-    let dominio = 'salud.gob.sv';
+    let dominio = req.app.get('sambaDominio'); 
     let username = req.params['id'];
     
     let usuario = instanciarUsuario(roles, sambaApi, zimbraApi, psqlAcceso, tokenz);
@@ -233,7 +234,7 @@ router.delete('/:id([a-z]+)', permisos('user:delete'), refrescador, function(req
     let zimbraApi = req.app.get('zimbraApi');
     let psqlAcceso = req.app.get('psqlAcceso');
 
-    let dominio = 'salud.gob.sv';
+    let dominio = req.app.get('sambaDominio'); 
     let username = req.params['id'];
 
     let usuario = instanciarUsuario(roles, sambaApi, zimbraApi, psqlAcceso, tokenz);

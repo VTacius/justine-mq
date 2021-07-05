@@ -1,16 +1,58 @@
 ## Montando una infraestructura para desarrollo
 
-### Creamos un par de usuarios que nos servirán para todas las peticiones
-``` sh
+## Preparando el entorno de desarrollo
+
+### Zimbra
+Creamos un usuario y lo configuramos como administrador. Las credenciales tienen que coincidir con las especificadas en el fichero configuracion.js
+``` bash
+zmprov ca api.gzovbbbqznqm@sanidad.gob.sv P.4ssw0rd
+zmprov ma api.gzovbbbqznqm@sanidad.gob.sv zimbraIsAdminAccount TRUE
+```
+
+### Samba
+
+Creamos un par de usuarios que nos servirá en las pruebas funcionales
+ 
+``` bash
 samba-tool user create administrador
 samba-tool user create tecnico
 samba-tool user create usuario
 ```
 
-### Los ponemos en los grupos respectivos: Esta configuración debe coincidir con la que se encuentra en el fichero configuracion.js
-``` sh
+Los ponemos en los grupos respectivos: Esta configuración debe coincidir con la que se encuentra en el fichero configuracion.js
+
+``` bash
 samba-tool group addmembers Administrators administrador
 samba-tool group addmembers DnsAdmins tecnico
+```
+
+### Sesión
+Iniciamos sesión en la aplicación y la guardamos
+``` bash
+curl -sL -H 'Content-Type: application/json' -XPOST 127.0.0.1:3000/auth/login -d '{"username": "administrador", "password": "P@ssw0rd.123"}' --cookie-jar galleta
+```
+
+## Operaciones para endpoint usuarios
++ Listamos los usuarios disponibles en el sistema
+``` bash
+curl -sL -H 'Content-Type: application/json' -XGET 127.0.0.1:3000/usuarios --cookie galleta
+curl -sL -H 'Content-Type: application/json' -XGET 127.0.0.1:3000/usuarios/detalles --cookie galleta 
+```
+
++ Creación de usuario
+``` bash
+curl -sL -H 'Content-Type: application/json' --cookie galleta -XPOST 127.0.0.1:3000/usuarios -d @textures/usuario.json
+```
+
++ Obtenemos al usuario recién creado
+``` bash
+curl -sL -H 'Content-Type: application/json' -XGET 127.0.0.1:3000/usuarios/opineda --cookie galleta | jq
+curl -sL -H 'Content-Type: application/json' -XGET 127.0.0.1:3000/usuarios/detalles/opineda --cookie galleta | jq
+```
+
++ Modificamos dicho usuario
+``` bash
+curl -sL -H 'Content-Type: application/json' --cookie galleta -XPUT 127.0.0.1:3000/usuarios/opineda -d @textures/usuario_modificacion.json
 ```
 
 ### Infraestructura con docker

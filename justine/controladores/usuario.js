@@ -16,7 +16,8 @@ class userBase extends conexion {
     // TODO: ¿Es esta la forma en que deberías formatear la respuesta?, ¿Deberías tener una librería para tales cosas? 
     formatearRespuesta(sc, zc, pc, completo){
         let resultado = [];
-        sc.data.forEach(function(usuario){
+        let contenido = 'mensaje' in sc.data ? sc.data.mensaje : sc.data; 
+        contenido.forEach(function(usuario){
             let datosZimbra = zc[usuario.sAMAccountName];
             let datosPsql = pc[usuario.sAMAccountName];
             let entidad = Object.assign(usuario, datosZimbra, datosPsql);
